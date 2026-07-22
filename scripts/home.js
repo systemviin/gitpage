@@ -40,17 +40,11 @@ class Home {
 
   listen() {
 
-    this.canvas.ontouchmove = (ev) => {
+    this.canvas.onmousedown = (ev) => {
       this.setPos(ev);
-console.log(ev.touches.length);
-      let isTouching = (ev.touches.length > 0);
-      if(!this.drawLoop && isTouching) {
-        this.circleSize = 10;
-        this.drawLoop = true;
-        this.drawShape();
-      }
-
-      this.drawLoop = isTouching; 
+      this.circleSize = 10;
+      this.drawLoop = true;
+      this.drawShape();
     }
     
     this.canvas.onmouseup = (ev) => {
@@ -59,7 +53,8 @@ console.log(ev.touches.length);
 
     this.canvas.onmousemove = (ev) => {   
       this.setPos(ev);
-console.log(ev);
+
+
       if(!this.drawLoop && ev.buttons == 1) {
         this.circleSize = 10;
         this.drawLoop = true;
