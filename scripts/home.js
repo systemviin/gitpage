@@ -53,15 +53,13 @@ class Home {
 
     this.canvas.onmousemove = (ev) => {   
       this.setPos(ev);
+      // if(!this.drawLoop && ev.buttons == 1) {
+      //   this.circleSize = 10;
+      //   this.drawLoop = true;
+      //   this.drawShape();
+      // }
 
-
-      if(!this.drawLoop && ev.buttons == 1) {
-        this.circleSize = 10;
-        this.drawLoop = true;
-        this.drawShape();
-      }
-
-      this.drawLoop = (ev.buttons == 1);      
+      // this.drawLoop = (ev.buttons == 1);      
     }
   }
 }
