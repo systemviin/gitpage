@@ -9,7 +9,10 @@ class CanvasTools {
 
     this.ctx.beginPath();
     this.ctx.strokeStyle = "rgb(102 51 153)"
-    this.ctx.arc(x - rect.left, y - rect.top, radius, 0, 2 * Math.PI);
+    let xPos = x - rect.left;
+    let yPos = y - rect.top;
+    console.log(xPos, yPos);
+    this.ctx.arc(xPos, yPos, radius, 0, 2 * Math.PI);
     this.ctx.stroke();
   }
 }
@@ -22,6 +25,7 @@ class Home {
     this.drawLoop = false;
     this.drawX = 0;
     this.drawY = 0;
+    this.isTouch = false;
     this.circleSize = 10;
   }
 
@@ -30,7 +34,7 @@ class Home {
     this.drawY = ev.clientY;
   }
 
-  drawShape() { 
+  drawShape() {     
     if (this.drawLoop) {
       this.brush.drawCircle(this.drawX, this.drawY, this.circleSize);
       this.circleSize += 5;
@@ -40,26 +44,45 @@ class Home {
 
   listen() {
 
+    // ---- Mouse Handlers ----
     this.canvas.onmousedown = (ev) => {
-      this.setPos(ev);
-      this.circleSize = 10;
+      if(this.isTouch) return;
+
       this.drawLoop = true;
-      this.drawShape();
+      this.circleSize = 10;      
+      this.setPos(ev);
+      this.drawShape();    
     }
     
     this.canvas.onmouseup = (ev) => {
+      if(this.isTouch) return;
+
+      this.drawLoop = false;
+    }  
+
+    this.canvas.onmousemove = (ev) => {   
+      if(this.isTouch) return;
+
+      this.setPos(ev);
+    }
+
+    // ---- Touch Handlers ----
+    this.canvas.ontouchstart = (ev) => {
+      this.isTouch = true;
+      this.drawLoop = true;
+      this.circleSize = 10;
+      this.setPos(ev.touches[0]);
+      this.drawShape();
+    }  
+
+    this.canvas.ontouchend = (ev) => {
       this.drawLoop = false;
     }
 
-    this.canvas.onmousemove = (ev) => {   
-      this.setPos(ev);
-      // if(!this.drawLoop && ev.buttons == 1) {
-      //   this.circleSize = 10;
-      //   this.drawLoop = true;
-      //   this.drawShape();
-      // }
-
-      // this.drawLoop = (ev.buttons == 1);      
+    this.canvas.ontouchmove = (ev) => {
+      if(ev.touches.length > 0) {
+        this.setPos(ev.touches[0]);
+      }
     }
   }
 }
